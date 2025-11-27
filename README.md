@@ -45,9 +45,19 @@ npm install
 - Create a project in Firebase Console.
 - Enable Email/Password Authentication.
 - Enable Firestore and (optionally) Storage.
-- Copy the Firebase config and paste it into `src/config/firebase.js`.
+- Add your Firebase credentials to a `.env` file with the `VITE_` prefix. Example values are in `.env.example`.
 
-> Note: At the moment this repo stores the Firebase config directly in `src/config/firebase.js`. For production use, it's recommended to switch to environment variables or other secure configuration methods (e.g. Vite's `.env` files) and keep your project settings out of version control.
+Example `.env` file (root of project):
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+> Note: This project reads Firebase config from environment variables (Vite `import.meta.env`) — see `src/config/firebase.js`. This avoids committing production keys to Git (also `.env` is in `.gitignore`).
 
 3) Start the development server:
 

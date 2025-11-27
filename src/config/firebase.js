@@ -4,16 +4,34 @@ import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signIn
 import { collection, doc, getDocs, getFirestore, query, setDoc, where } from 'firebase/firestore'
 import { toast } from "react-toastify";
 
-// --------- Paste Your Firebase Config File Here ---------
+// --------- Read Firebase config from Vite env vars (VITE_*) ---------
+// Create a `.env` file in your project root with the following variables:
+// VITE_FIREBASE_API_KEY="your_api_key"
+// VITE_FIREBASE_AUTH_DOMAIN="your_project.firebaseapp.com"
+// VITE_FIREBASE_PROJECT_ID="your_project_id"
+// VITE_FIREBASE_STORAGE_BUCKET="your_project.appspot.com"
+// VITE_FIREBASE_MESSAGING_SENDER_ID="your_messaging_sender_id"
+// VITE_FIREBASE_APP_ID="your_app_id"
 
 const firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: "chat-app-620aa.firebaseapp.com",
-  projectId: "chat-app-620aa",
-  storageBucket: "chat-app-620aa.firebasestorage.app",
-  messagingSenderId: "83761015812",
-  appId: "1:83761015812:web:10ecda6d7e3515be851951"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
+
+// Helpful dev-time validation message to alert missing env vars
+if (import.meta.env.DEV) {
+    const missing = Object.entries(firebaseConfig).filter(([, v]) => !v).map(([k]) => k);
+    if (missing.length) {
+        console.warn(
+            `Firebase config values are missing from environment: ${missing.join(', ')}. ` +
+            `Make sure you have a ".env" file with VITE_FIREBASE_* values and restart the dev server.`
+        );
+    }
+}
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
